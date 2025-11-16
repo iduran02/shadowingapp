@@ -2,7 +2,7 @@
 
 const CACHE_NAME = 'shadowing-app-cache-v1';
 const urlsToCache = [
-  'shadowing-app.html',
+  'index.html',
   'manifest.json',
   // İkon URL'lerini de buraya ekleyebilirsiniz, ama şimdilik temel dosyalar yeterli.
 ];
@@ -48,4 +48,5 @@ self.addEventListener('activate', event => {
       );
     })
   );
+
 });
