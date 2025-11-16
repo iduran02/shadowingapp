@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subtitle Shadowing Practice</title>
+    
+    <!-- PWA (Progressive Web App) için YENİ EKLENEN etiketler -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#111827">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Shadowing App">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <!-- PWA etiketleri sonu -->
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- İkonlar için Phosphor Icons (veya benzeri, burada SVG kullanacağız) -->
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #f3f4f6; /* text-gray-200 */
+        }
+
+        /* Özel stil ile checkbox'ı 'toggle' (açma-kapama) düğmesine çevirme */
+        .toggle-checkbox:checked {
+            @apply: bg-blue-600;
+            right: 0;
+            border-color: #2563eb; /* bg-blue-600 */
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            @apply: bg-blue-600;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            left: calc(100% - 1.25rem); /* 1.25rem = w-5 */
+            @apply: translate-x-full;
+        }
+        .toggle-label:after {
+            content: '';
+            @apply: absolute top-0.5 left-0.5 bg-white rounded-full h-5 w-5 shadow-md transition-transform duration-200 ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- ... (Mevcut HTML kodunuzun tamamı burada, <script> etiketine kadar) ... -->
+    <div class="w-full max-w-4xl mx-auto space-y-6">
+        
+        <header class="text-center">
+            <h1 class="text-3xl font-bold text-white">Subtitle Shadowing Practice</h1>
+            <p class="text-lg text-gray-400" id="file-name-display">Upload a subtitle file to begin your practice.</p>
+        </header>
+
+        <!-- Ayarlar Kontrol Paneli -->
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 items-center">
+                
+                <!-- Dosya Yükleme Düğmesi -->
+                <label class="col-span-2 md:col-span-1 cursor-pointer inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <span>Change File</span>
+                    <input type="file" id="file-input" class="hidden" accept=".srt,.txt">
+                </label>
+
+                <!-- Ses Seçimi -->
+                <div class="col-span-1">
+                    <label for="voice-select" class="block text-sm font-medium text-gray-300">Voice:</label>
+                    <select id="voice-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                        <option>Loading voices...</option>
+                    </select>
+                </div>
+
+                <!-- Tekrar Sayısı -->
+                <div class="col-span-1">
+                    <label for="repeat-select" class="block text-sm font-medium text-gray-300">Repeats:</label>
+                    <select id="repeat-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <!-- Gruplama Modu -->
+                <div class="col-span-1">
+                    <label for="group-select" class="block text-sm font-medium text-gray-300">Group:</label>
+                    <select id="group-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                        <option value="1" selected>1 Sentence</option>
+                        <option value="2">2 Sentences</option>
+                        <option value="3">3 Sentences</option>
+                    </select>
+                </div>
+
+                <!-- Auto-Play Toggle -->
+                <div class="col-span-1 flex items-center justify-center space-x-2 pt-5">
+                    <span class="text-sm font-medium text-gray-300">Auto-Play:</span>
+                    <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" id="auto-play-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                        <label for="auto-play-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Ana Cümle Görüntüleme Alanı -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px] flex items-center justify-center">
+            <p id="sentence-display" class="text-3xl md:text-4xl font-semibold text-center text-white">Welcome! Load a file to start.</p>
+        </div>
+
+        <!-- İlerleme ve Kontroller -->
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg space-y-4">
+            <!-- İlerleme Metni -->
+            <div class="text-center text-gray-400">
+                <span id="progress-text">Sentence 0 / 0</span>
+            </div>
+            
+            <!-- Kontrol Düğmeleri -->
+            <div class="flex items-center justify-center space-x-6">
+                <!-- Previous Düğmesi -->
+                <button id="prev-btn" class="text-gray-400 hover:text-white transition-colors" title="Previous">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                
+                <!-- Play/Pause Düğmesi -->
+                <button id="play-pause-btn" class="p-4 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-all shadow-lg" title="Play">
+                    <!-- Play İkonu -->
+                    <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                    <!-- Pause İkonu -->
+                    <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm5 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd"></path></svg>
+                </button>
+
+                <!-- Next Düğmesi -->
+                <button id="next-btn" class="text-gray-400 hover:text-white transition-colors" title="Next">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z" clip-rule="evenodd" transform="rotate(180 10 10)"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Kelime Seçim Pop-up Menüsü (Gizli) -->
+    <div id="selection-popup" class="hidden absolute bg-gray-700 border border-gray-600 rounded-md shadow-lg p-1 z-50 flex space-x-1">
+        <button id="define-btn" class="px-3 py-1 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">Define (EN)</button>
+        <button id="translate-btn" class="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded">Translate (TR)</button>
+    </div>
+
+    <!-- API Sonuçları için Modal (Gizli) -->
+    <div id="api-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-40 p-4">
+        <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-lg relative">
+            <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-400 hover:text-white">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+            <h3 class="text-lg font-medium text-white mb-4" id="modal-title">Gemini API Result</h3>
+            <div id="modal-content" class="text-gray-300 max-h-60 overflow-y-auto">
+                <!-- API sonucu buraya gelecek -->
+            </div>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // --- Service Worker Kaydı (YOL GÜNCELLENDİ) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js') // ÖNEMLİ: Baştaki '/' kaldırıldı
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+        // --- Service Worker Kaydı Sonu ---
+
+
+        // --- DOM Elementleri ---
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const voiceSelect = document.getElementById('voice-select');
+        const repeatSelect = document.getElementById('repeat-select');
+        const groupSelect = document.getElementById('group-select');
+        const autoplayToggle = document.getElementById('auto-play-toggle');
+        const sentenceDisplay = document.getElementById('sentence-display');
+        const progressText = document.getElementById('progress-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        
+        // Pop-up & Modal Elementleri
+        const selectionPopup = document.getElementById('selection-popup');
+        const defineBtn = document.getElementById('define-btn');
+        const translateBtn = document.getElementById('translate-btn');
+        const apiModal = document.getElementById('api-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+
+        // --- Gemini API Anahtarı ---
+        // Bu anahtarı boş bırakın, platform otomatik olarak sağlayacaktır.
+        const apiKey = ""; 
+
+        // --- Uygulama Durumu (State) ---
+        let sentences = [];
+        let currentIndex = 0;
+        let currentRepeat = 0;
+        let voices = [];
+        let selectedVoice = null;
+        let isSpeaking = false;
+        let selectedWord = '';
+
+        // --- Ana SpeechSynthesis Objesi ---
+        const utterance = new SpeechSynthesisUtterance();
+
+        // --- Başlangıç Fonksiyonu ---
+        function init() {
+            // Sesleri yükle
+            loadVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = loadVoices;
+            }
+
+            // Kayıtlı veriyi yükle (YENİ EKLENDİ)
+            loadSavedData();
+
+            // Olay Dinleyicileri (Event Listeners)
+            fileInput.addEventListener('change', handleFile);
+            voiceSelect.addEventListener('change', handleVoiceChange);
+            playPauseBtn.addEventListener('click', playPause);
+            nextBtn.addEventListener('click', goToNext);
+            prevBtn.addEventListener('click', goToPrev);
+            
+            // Auto-play düğmesinin durumunu state'e bağla
+            autoplayToggle.addEventListener('change', () => {
+                // Bu olay dinleyici, toggle'ın "checked" durumunu her değiştirdiğinde tetiklenir
+                // ve "handleSpeechEnd" fonksiyonunun doğru kararı vermesini sağlar.
+            });
+
+            // Konuşma bittiğinde tetiklenecek ana mantık
+            utterance.onend = handleSpeechEnd;
+            utterance.onerror = (event) => {
+                console.error('SpeechSynthesisUtterance.onerror', event);
+                isSpeaking = false;
+                updatePlayPauseIcon(false);
+            };
+
+            // Metin seçimi (Kelime tanımı/çevirisi için)
+            sentenceDisplay.addEventListener('mouseup', handleTextSelection);
+            document.addEventListener('mousedown', (e) => {
+                // Popup dışına tıklarsak gizle
+                if (!selectionPopup.contains(e.target) && !sentenceDisplay.contains(e.target)) {
+                    selectionPopup.classList.add('hidden');
+                }
+            });
+
+            // Modal butonları
+            defineBtn.addEventListener('click', () => callGemini('define'));
+            translateBtn.addEventListener('click', () => callGemini('translate'));
+            closeModalBtn.addEventListener('click', hideModal);
+            apiModal.addEventListener('click', (e) => {
+                if (e.target === apiModal) hideModal();
+            });
+        }
+
+        // --- Fonksiyonlar ---
+
+        // 0. Kayıtlı Veriyi Yükle (YENİ FONKSİYON)
+        function loadSavedData() {
+            const savedSentences = localStorage.getItem('shadowing_sentences');
+            const savedIndex = localStorage.getItem('shadowing_index');
+            const savedFile = localStorage.getItem('shadowing_file');
+
+            // Kayıtlı veri varsa yükle
+            if (savedSentences && savedFile) {
+                try {
+                    sentences = JSON.parse(savedSentences);
+                    currentIndex = parseInt(savedIndex, 10) || 0;
+                    fileNameDisplay.textContent = `(Loaded) ${savedFile}`;
+                    
+                    if (sentences.length > 0) {
+                        updateDisplay();
+                    }
+                } catch (error) {
+                    console.error("Failed to load saved data:", error);
+                    localStorage.clear(); // Hatalı veriyi temizle
+                }
+            }
+        }
+
+        // 1. Sesleri Yükle ve Dropdown'u Doldur
+        function loadVoices() {
+            voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('en'));
+            voiceSelect.innerHTML = '';
+            
+            if (voices.length === 0) {
+                voiceSelect.innerHTML = '<option>No English voices found</option>';
+                return;
+            }
+
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute('data-name', voice.name);
+                voiceSelect.appendChild(option);
+            });
+            
+            // Varsayılan olarak ilk sesi veya tercih edileni seç
+            selectedVoice = voices[0];
+            const preferredVoice = voices.find(v => v.name.includes("Google") || v.name.includes("David") || v.name.includes("Zira"));
+            if (preferredVoice) {
+                selectedVoice = preferredVoice;
+                voiceSelect.value = `${preferredVoice.name} (${preferredVoice.lang})`;
+            }
+        }
+
+        function handleVoiceChange() {
+            const selectedName = voiceSelect.options[voiceSelect.selectedIndex].getAttribute('data-name');
+            selectedVoice = voices.find(voice => voice.name === selectedName);
+        }
+
+        // 2. Dosya İşleme (.srt & .txt)
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            fileNameDisplay.textContent = file.name;
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const content = e.target.result;
+                if (file.name.endsWith('.srt')) {
+                    sentences = parseSrt(content);
+                } else {
+                    sentences = parseTxt(content);
+                }
+                
+                if (sentences.length > 0) {
+                    currentIndex = 0;
+                    
+                    // --- YENİ EKLENDİ: Veriyi localStorage'a kaydet ---
+                    try {
+                        localStorage.setItem('shadowing_sentences', JSON.stringify(sentences));
+                        localStorage.setItem('shadowing_file', file.name);
+                        // updateDisplay() çağrıldığında index'i (0) kaydedecek
+                    } catch (e) {
+                        console.error("Failed to save to localStorage:", e);
+                        // Basit bir hata bildirimi, alert() yerine modal kullanılabilir
+                        sentenceDisplay.textContent = "Error: Could not save file. It might be too large for local storage.";
+                    }
+                    // --- BİTİŞ ---
+                    
+                    updateDisplay();
+                } else {
+                    sentenceDisplay.textContent = "Could not parse file or file is empty.";
+                    progressText.textContent = "Sentence 0 / 0";
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function parseSrt(data) {
+            return data
+                .replace(/\r/g, '')
+                // Zaman damgalarını ve sıraları kaldır
+                .replace(/(^\d+$|^(\d{2}:){2}\d{2},\d{3} --> (\d{2}:){2}\d{2},\d{3}$)/gm, '')
+                // HTML etiketlerini kaldır
+                .replace(/<[^>]+>/g, '')
+                // Boş satırları birleştir ve temizle
+                .split('\n\n')
+                .map(line => line.trim().replace(/\n/g, ' ')) // Çok satırlı altyazıları tek satıra indir
+                .filter(line => line.length > 0); // Boş satırları filtrele
+        }
+
+        function parseTxt(data) {
+            return data
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+        }
+
+        // 3. Arayüz Güncelleme
+        function updateDisplay() {
+            if (sentences.length === 0) return;
+            
+            const groupSize = parseInt(groupSelect.value, 10);
+            let textToShow = [];
+
+            for (let i = 0; i < groupSize; i++) {
+                if (currentIndex + i < sentences.length) {
+                    textToShow.push(sentences[currentIndex + i]);
+                }
+            }
+            
+            sentenceDisplay.textContent = textToShow.join(' ');
+            progressText.textContent = `Sentence ${currentIndex + 1} / ${sentences.length}`;
+            
+            // --- YENİ EKLENDİ: Mevcut ilerlemeyi kaydet ---
+            if (sentences.length > 0) {
+                localStorage.setItem('shadowing_index', currentIndex.toString());
+            }
+            // --- BİTİŞ ---
+
+            updatePlayPauseIcon(false);
+        }
+
+        function updatePlayPauseIcon(isPlaying) {
+            if (isPlaying) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        }
+
+        // 4. Konuşma Motoru ve Kontroller
+        function playPause() {
+            if (isSpeaking) {
+                // Duraklat (veya iptal et, iptal etmek daha temiz)
+                speechSynthesis.cancel();
+                isSpeaking = false;
+                updatePlayPauseIcon(false);
+            } else {
+                // Oynat
+                if (sentences.length > 0) {
+                    speak();
+                }
+            }
+        }
+
+        function speak() {
+            if (isSpeaking) return; // Zaten konuşuyorsa tekrar başlatma
+
+            isSpeaking = true;
+            currentRepeat = 0; // Tekrar sayacını sıfırla
+            updatePlayPauseIcon(true);
+            
+            const maxRepeats = parseInt(repeatSelect.value, 10);
+            const groupSize = parseInt(groupSelect.value, 10);
+            
+            let textToSpeak = [];
+            for (let i = 0; i < groupSize; i++) {
+                if (currentIndex + i < sentences.length) {
+                    textToSpeak.push(sentences[currentIndex + i]);
+                }
+            }
+
+            utterance.text = textToSpeak.join(' ');
+            utterance.voice = selectedVoice;
+            // Diğer ayarlar (rate, pitch vb. eklenebilir)
+            
+            speechSynthesis.speak(utterance);
+        }
+
+        // !!! BURASI AUTOPLAY İÇİN EN KRİTİK YER !!!
+        function handleSpeechEnd() {
+            currentRepeat++;
+            const maxRepeats = parseInt(repeatSelect.value, 10);
+
+            if (currentRepeat < maxRepeats) {
+                // Henüz bitmedi, tekrar konuş
+                speechSynthesis.speak(utterance);
+            } else {
+                // Tüm tekrarlar bitti
+                isSpeaking = false;
+                
+                // Auto-Play düğmesinin GÜNCEL durumunu kontrol et
+                const isAutoPlayOn = autoplayToggle.checked;
+                
+                if (isAutoPlayOn) {
+                    // Auto-Play açıksa, bir sonrakine geç
+                    goToNext();
+                } else {
+                    // Auto-Play kapalıysa, durakla
+                    updatePlayPauseIcon(false);
+                }
+            }
+        }
+
+        function goToNext() {
+            const groupSize = parseInt(groupSelect.value, 10);
+            if (currentIndex + groupSize < sentences.length) {
+                currentIndex += groupSize;
+                updateDisplay();
+                
+                // Eğer auto-play açıksa, yenisini hemen oynat
+                const isAutoPlayOn = autoplayToggle.checked;
+                if (isAutoPlayOn) {
+                    speak();
+                }
+            } else {
+                // Listenin sonu
+                isSpeaking = false;
+                updatePlayPauseIcon(false);
+            }
+        }
+
+        function goToPrev() {
+            const groupSize = parseInt(groupSelect.value, 10);
+            if (currentIndex - groupSize >= 0) {
+                currentIndex -= groupSize;
+                updateDisplay();
+            } else {
+                // Listenin başı
+                currentIndex = 0;
+                updateDisplay();
+            }
+            // Geriye giderken otomatik oynatmayı durdur
+            if (isSpeaking) {
+                speechSynthesis.cancel();
+                isSpeaking = false;
+                updatePlayPauseIcon(false);
+            }
+        }
+
+        // 5. Kelime Seçimi ve API İşlemleri
+        function handleTextSelection(event) {
+            if (isSpeaking) return; // Konuşurken seçim yapmayı engelle
+
+            const selection = window.getSelection().toString().trim();
+            if (selection && selection.length > 0 && !selection.includes(' ')) { // Sadece tek kelime
+                selectedWord = selection;
+                
+                // Pop-up'ı ayarla
+                selectionPopup.style.top = `${event.clientY - 50}px`; // Biraz yukarıda
+                selectionPopup.style.left = `${event.clientX}px`; // Farenin yanında
+                selectionPopup.classList.remove('hidden');
+            } else {
+                selectionPopup.classList.add('hidden');
+            }
+        }
+
+        async function callGemini(action) {
+            if (!selectedWord) return;
+            
+            selectionPopup.classList.add('hidden');
+            showModal("Loading...", "Awaiting response from Gemini...");
+
+            if (!apiKey) {
+                console.error("API key is missing.");
+                showModal("Error", "Gemini API key is not set. Please check the console or script.");
+                return;
+            }
+
+            let prompt;
+            if (action === 'define') {
+                modalTitle.textContent = `Definition of "${selectedWord}"`;
+                prompt = `Provide a simple, single-sentence English definition for the word: '${selectedWord}'.`;
+            } else { // translate
+                modalTitle.textContent = `Translation of "${selectedWord}"`;
+                prompt = `Translate the English word '${selectedWord}' to Turkish. Provide only the translation.`;
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                // Google Search grounding'i burada ekleyebiliriz
+                // tools: [{ "google_search": {} }], 
+            };
+            
+            // Basit bir retry mekanizması
+            let response;
+            try {
+                response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text) {
+                    modalContent.textContent = text;
+                } else {
+                    modalContent.textContent = "Could not parse the response from Gemini.";
+                }
+
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                showModal("Error", `Failed to fetch response: ${error.message}`);
+            }
+        }
+
+        async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 429 || response.status >= 500) { // Throttling veya Sunucu Hatası
+                        throw new Error(`Retryable status: ${response.status}`);
+                    }
+                    return response; // Başarılı
+                } catch (error) {
+                    if (i === retries - 1) throw error; // Son denemede hatayı fırlat
+                    await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i))); // Exponential backoff
+                }
+            }
+        }
+
+        function showModal(title, content) {
+            modalTitle.textContent = title;
+            modalContent.textContent = content;
+            apiModal.classList.remove('hidden');
+        }
+
+        function hideModal() {
+            apiModal.classList.add('hidden');
+        }
+
+
+        // --- Uygulamayı Başlat ---
+        init();
+
+    </script>
+</body>
+</html>
