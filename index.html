@@ -60,54 +60,54 @@
 
         <!-- Ayarlar Kontrol Paneli -->
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 items-center">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 
-                <!-- Dosya Yükleme Düğmesi -->
-                <label class="col-span-2 md:col-span-1 cursor-pointer inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <span>Change File</span>
-                    <input type="file" id="file-input" class="hidden" 
-                </label>
+                <div class="flex items-center justify-between md:justify-start md:space-x-4">
+                    <label class="cursor-pointer inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <span>Change File</span>
+                        <input type="file" id="file-input" class="hidden"> </label>
 
-                <!-- Ses Seçimi -->
-                <div class="col-span-1">
-                    <label for="voice-select" class="block text-sm font-medium text-gray-300">Voice:</label>
-                    <select id="voice-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
-                        <option>Loading voices...</option>
-                    </select>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm font-medium text-gray-300">Auto-Play:</span>
+                        <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" id="auto-play-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="auto-play-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Tekrar Sayısı -->
-                <div class="col-span-1">
-                    <label for="repeat-select" class="block text-sm font-medium text-gray-300">Repeats:</label>
-                    <select id="repeat-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
-                        <option value="2">2</option>
-                        <option value="3" selected>3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label for="voice-select" class="block text-sm font-medium text-gray-300">Voice:</label>
+                        <select id="voice-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                            <option>Loading voices...</option>
+                        </select>
+                    </div>
 
-                <!-- Gruplama Modu -->
-                <div class="col-span-1">
-                    <label for="group-select" class="block text-sm font-medium text-gray-300">Group:</label>
-                    <select id="group-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
-                        <option value="1" selected>1 Sentence</option>
-                        <option value="2">2 Sentences</option>
-                        <option value="3">3 Sentences</option>
-                    </select>
-                </div>
+                    <div>
+                        <label for="repeat-select" class="block text-sm font-medium text-gray-300">Repeats:</label>
+                        <select id="repeat-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                            <option value="2">2</option>
+                            <option value="3" selected>3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
 
-                <!-- Auto-Play Toggle -->
-                <div class="col-span-1 flex items-center justify-center space-x-2 pt-5">
-                    <span class="text-sm font-medium text-gray-300">Auto-Play:</span>
-                    <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
-                        <input type="checkbox" id="auto-play-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                        <label for="auto-play-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
+                    <div>
+                        <label for="group-select" class="block text-sm font-medium text-gray-300">Group:</label>
+                        <select id="group-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                            <option value="1" selected>1 Sentence</option>
+                            <option value="2">2 Sentences</option>
+                            <option value="3">3 Sentences</option>
+                        </select>
                     </div>
                 </div>
 
             </div>
         </div>
+        ```
+
 
         <!-- Ana Cümle Görüntüleme Alanı -->
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px] flex items-center justify-center">
@@ -629,4 +629,5 @@
     </script>
 </body>
 </html>
+
 
