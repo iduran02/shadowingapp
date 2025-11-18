@@ -209,7 +209,7 @@
 
 
             // YENİ: Başlangıçta düğmeleri devre dışı bırak
-            playPauseBtn.disabled = true; 
+            playPauseBtn.disabled = true; // Hata artık burada oluşmamalı
             nextBtn.disabled = true;
             prevBtn.disabled = true;
 
@@ -253,7 +253,7 @@
                     
                     if (sentences.length > 0) {
                         updateDisplay();
-                        // Dosya yüklüyse düğmeleri aktif et
+                        // YENİ: Dosya yüklüyse düğmeleri aktif et
                         playPauseBtn.disabled = false;
                         nextBtn.disabled = false;
                         prevBtn.disabled = false;
@@ -266,7 +266,7 @@
         }
 
         function loadVoices() {
-            // Sesler yüklenirken Oynat düğmesini devre dışı bırak
+            // YENİ: Sesler yüklenirken Oynat düğmesini devre dışı bırak
             playPauseBtn.disabled = true;
             voiceSelect.innerHTML = '<option>Loading voices...</option>';
 
@@ -274,7 +274,10 @@
             voiceSelect.innerHTML = '';
             
             if (voices.length === 0) {
+                // Not: Bazı tarayıcılar (öz. mobil) sesleri 'onvoiceschanged' olmadan vermez,
+                // veya kullanıcı etkileşimi (ilk tıklama) gerektirir.
                 voiceSelect.innerHTML = '<option>No English voices</option>';
+                // Düğmeyi yine de aktif edelim, varsayılan sesi kullanır
                 if (sentences.length > 0) playPauseBtn.disabled = false;
                 return;
             }
@@ -300,7 +303,7 @@
             selectedVoice = voiceToSelect;
             voiceSelect.value = `${voiceToSelect.name} (${voiceToSelect.lang})`;
 
-            // Sesler yüklendikten sonra düğmeyi (eğer dosya varsa) aktif et
+            // YENİ: Sesler yüklendikten sonra düğmeyi (eğer dosya varsa) aktif et
             if (sentences.length > 0) {
                 playPauseBtn.disabled = false;
             }
@@ -344,14 +347,14 @@
                     }
                     
                     updateDisplay();
-                    // Dosya yüklendiğinde düğmeleri aktif et
+                    // YENİ: Dosya yüklendiğinde düğmeleri aktif et
                     playPauseBtn.disabled = false;
                     nextBtn.disabled = false;
                     prevBtn.disabled = false;
                 } else {
                     sentenceDisplay.textContent = "Could not parse file or file is empty.";
                     progressText.textContent = "Sentence 0 / 0";
-                    // Dosya boşsa düğmeleri devre dışı bırak
+                    // YENİ: Dosya boşsa düğmeleri devre dışı bırak
                     playPauseBtn.disabled = true;
                     nextBtn.disabled = true;
                     prevBtn.disabled = true;
@@ -430,15 +433,15 @@
         // GÜVENİLİR FONKSİYON 1: Ses ve Hız Ayarlarını Dinamik Olarak Belirleme (TEK UTTERANCE)
         function getVoiceAndRate(repeatIndex, maxRepeats) {
             // 📢 KULLANICI SES AYARLARI: Tarayıcınızda yüklü olan seslerin TAM ismini girin.
-            // Bu versiyonda gruptaki her cümle tek sesle okunur, ancak tekrarlarda ses değişir.
             const MANUEL_ERKEK_SESI_ADI = "Microsoft David - English (United States)"; 
             const MANUEL_KADIN_SESI_ADI = "Google US English"; 
             const MANUEL_ALTERNATIF_SES_ADI = "Microsoft Zira - English (United States)"; 
             
+            // Varsayılan sesi ve manuel sesleri bul
             const defaultVoice = selectedVoice || voices.find(v => v.default) || voices[0];
             const maleVoice = voices.find(v => v.name === MANUEL_ERKEK_SESI_ADI) || defaultVoice;
             const femaleVoice = voices.find(v => v.name === MANUEL_KADIN_SESI_ADI) || defaultVoice;
-            const alternateVoice = voices.find(v => v.name === MANUEL_ALTERNATIF_SESI_ADI) || defaultVoice;
+            const alternateVoice = voices.find(v => v.name === MANUEL_ALTERNATIF_SES_ADI) || defaultVoice;
 
             let voiceToUse;
             let rateToUse; 
@@ -613,7 +616,7 @@
             if (selection && selection.length > 0 && !selection.includes(' ')) {
                 selectedWord = selection;
                 
-                let popupWidth = 150; 
+                let popupWidth = 150; // Ortalama bir genişlik varsay
                 if (selectionPopup && selectionPopup.offsetWidth > 0) {
                     popupWidth = selectionPopup.offsetWidth;
                 }
