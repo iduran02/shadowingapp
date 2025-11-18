@@ -410,7 +410,7 @@
             }
         }
 
-        // 4. Kontroller (Play/Pause)
+        // 4. Konuşma Motoru ve Kontroller (Play/Pause)
         function playPause() {
             if (isSpeaking) {
                 // Duraklat
@@ -427,9 +427,10 @@
             }
         }
         
-        // YENİ FONKSİYON 1: Ses ve Hız Ayarlarını Dinamik Olarak Belirleme
-        function getVoiceAndRate(repeatIndex, maxRepeats, indexInGroup, totalInGroup) {
+        // GÜVENİLİR FONKSİYON 1: Ses ve Hız Ayarlarını Dinamik Olarak Belirleme (TEK UTTERANCE)
+        function getVoiceAndRate(repeatIndex, maxRepeats) {
             // 📢 KULLANICI SES AYARLARI: Tarayıcınızda yüklü olan seslerin TAM ismini girin.
+            // Bu versiyonda gruptaki her cümle tek sesle okunur, ancak tekrarlarda ses değişir.
             const MANUEL_ERKEK_SESI_ADI = "Microsoft David - English (United States)"; 
             const MANUEL_KADIN_SESI_ADI = "Google US English"; 
             const MANUEL_ALTERNATIF_SES_ADI = "Microsoft Zira - English (United States)"; 
@@ -442,54 +443,30 @@
             let voiceToUse;
             let rateToUse; 
 
-            // 1. Tonalite (Hız) Ayarı: Tekrar sayısına bağlıdır (Clear/Natural/Fluent)
+            // Tonalite (Hız) ve Ses, SADECE tekrar sayısına bağlıdır (Grup tek utterance olarak okunur)
             switch (repeatIndex % 3) {
-                case 0: // CLEAR (Yavaş)
+                case 0: // CLEAR (Yavaş, Erkek sesi)
+                    voiceToUse = maleVoice; 
                     rateToUse = 0.8; 
                     break;
-                case 1: // NATURAL (Normal)
+                case 1: // NATURAL (Normal, Kadın sesi)
+                    voiceToUse = femaleVoice; 
                     rateToUse = 1.0; 
                     break;
-                case 2: // FLUENT (Hızlı)
+                case 2: // FLUENT (Hızlı, Alternatif ses)
+                    voiceToUse = alternateVoice;
                     rateToUse = 1.1; 
                     break;
                 default:
+                    voiceToUse = defaultVoice;
                     rateToUse = 1.0;
             }
             
-            // 2. Ses (Cinsiyet) Ayarı: Cümlenin gruptaki sırasına bağlıdır (Role-Play)
-            if (totalInGroup > 1) {
-                // Cümle Sesi Mantığı: S1=Erkek, S2=Kadın, S3=Alternatif, S4=Erkek... (3 sesli döngü)
-                switch (indexInGroup % 3) {
-                    case 0: // Cümle 1, 4, 7...
-                        voiceToUse = maleVoice; 
-                        break;
-                    case 1: // Cümle 2, 5, 8...
-                        voiceToUse = femaleVoice; 
-                        break;
-                    case 2: // Cümle 3, 6, 9...
-                        voiceToUse = alternateVoice; 
-                        break;
-                }
-            } else {
-                 // Grup büyüklüğü 1 ise, ses tekrar sayısına göre değişsin (eski mantık)
-                 switch (repeatIndex % 3) {
-                    case 0: 
-                        voiceToUse = maleVoice; break;
-                    case 1: 
-                        voiceToUse = femaleVoice; break;
-                    case 2: 
-                        voiceToUse = alternateVoice; break;
-                    default:
-                        voiceToUse = defaultVoice;
-                }
-            }
-
             return { voice: voiceToUse, rate: rateToUse };
         }
 
 
-        // YENİ FONKSİYON 2: Konuşma Motoru (TAMAMEN REVİZE EDİLDİ - Zincirleme Yapı)
+        // GÜVENİLİR FONKSİYON 2: Konuşma Motoru (TEK UTTERANCE)
         function speak() {
             if (isSpeaking) return;
 
@@ -499,97 +476,68 @@
             const maxRepeats = parseInt(repeatSelect.value, 10);
             const groupSize = parseInt(groupSelect.value, 10);
             
-            // Konuşulacak cümleleri ayır (sentencesInGroup)
-            const sentencesInGroup = [];
+            // Konuşulacak metni oluştur (cümleleri birleştir)
+            let textToSpeak = [];
             for (let i = 0; i < groupSize; i++) {
                 if (currentIndex + i < sentences.length) {
-                    sentencesInGroup.push(sentences[currentIndex + i]);
+                    textToSpeak.push(sentences[currentIndex + i]);
                 }
             }
+
+            // Ses ve Hız ayarlarını al
+            const { voice: voiceToUse, rate: rateToUse } = getVoiceAndRate(currentRepeat, maxRepeats);
+
+            const utterance = new SpeechSynthesisUtterance(textToSpeak.join(' '));
             
-            if (sentencesInGroup.length === 0) {
+            // Ayarları uygula
+            utterance.voice = voiceToUse; 
+            utterance.rate = rateToUse;   
+            
+            utterance.onend = handleSpeechEnd; // Tek konuşma bitince ilerle
+            utterance.onerror = (event) => {
+                console.error('SpeechSynthesisUtterance.onerror', event);
                 isSpeaking = false;
                 updatePlayPauseIcon(false);
-                return;
-            }
+            };
+            
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utterance);
+            
+            // UI Güncelleme
+            const repeatInfo = ` (Tekrar ${currentRepeat + 1}/${maxRepeats} - Hız: ${rateToUse.toFixed(1)})`;
+            progressText.textContent = `Sentence ${currentIndex + 1} / ${sentences.length}${repeatInfo}`;
 
-            // --- Recursive Group Repeater (Dış Döngü: Tekrar Sayısı) ---
-            function startNextRepeat() {
-                if (currentRepeat >= maxRepeats) {
-                    // Tüm tekrarlar bitti
-                    isSpeaking = false;
-                    updatePlayPauseIcon(false);
-                    
-                    if (autoplayToggle.checked) {
-                        goToNext(); 
-                    }
-                    return;
-                }
-
-                // --- Inner Speaker (İç Döngü: Gruptaki Cümleler) ---
-                let indexInGroup = 0;
-                function speakNextSentence() {
-                    if (indexInGroup >= sentencesInGroup.length) {
-                        // Gruptaki tüm cümleler söylendi. Bir sonraki dış tekrara geç.
-                        currentRepeat++;
-                        // Tekrarlar arasında küçük bir gecikme ekleyelim (500ms)
-                        setTimeout(startNextRepeat, 500); 
-                        return;
-                    }
-
-                    const textToSpeak = sentencesInGroup[indexInGroup];
-                    
-                    // Ses ve Hız ayarlarını al
-                    const { voice: voiceToUse, rate: rateToUse } = getVoiceAndRate(
-                        currentRepeat, 
-                        maxRepeats, 
-                        indexInGroup,
-                        sentencesInGroup.length 
-                    );
-
-                    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-                    utterance.voice = voiceToUse;
-                    utterance.rate = rateToUse; 
-                    utterance.onend = () => {
-                        indexInGroup++;
-                        speakNextSentence(); // Bir sonraki cümleyi başlat
-                    };
-                    utterance.onerror = (event) => {
-                         console.error('SpeechSynthesisUtterance.onerror', event);
-                         // Hata durumunda döngüyü kes ve bitir
-                         isSpeaking = false;
-                         updatePlayPauseIcon(false);
-                    };
-
-                    speechSynthesis.cancel();
-                    speechSynthesis.speak(utterance);
-                    
-                    // UI Güncelleme (Hangi cümlenin okunduğunu göster)
-                    const progressInfo = ` (Tekrar ${currentRepeat + 1}/${maxRepeats} - Hız: ${rateToUse.toFixed(1)} - Ses: ${voiceToUse.name.split(' ')[0]})`;
-                    progressText.textContent = `Sentence ${currentIndex + indexInGroup + 1} / ${sentences.length}${progressInfo}`;
-
-                    // Arka Plan Kontrolünü kur (Sadece ilk cümlenin ilk tekrarında)
-                    if (currentRepeat === 0 && indexInGroup === 0) {
-                         setupMediaSession(voiceToUse, sentencesInGroup.join(' '));
-                    }
-                }
-                
-                // Bu tekrarın ilk cümlesini başlat
-                speakNextSentence();
-            }
-
-            // Başlangıç
-            currentRepeat = 0; 
-            startNextRepeat();
+            // Arka Plan Kontrolünü kur
+            setupMediaSession(voiceToUse, textToSpeak.join(' '));
         }
 
-        // YENİ FONKSİYON 3: Arka Planda Çalma (Media Session API)
+        // GÜVENİLİR FONKSİYON 3: Konuşma Bitişini Yönetme
+        function handleSpeechEnd() {
+            currentRepeat++;
+            const maxRepeats = parseInt(repeatSelect.value, 10);
+
+            if (currentRepeat < maxRepeats) {
+                isSpeaking = false; // 'speak' fonksiyonunun tekrar çalışabilmesi için
+                speak(); // Aynı grup için yeni tekrar başlat
+            } else {
+                isSpeaking = false;
+                const isAutoPlayOn = autoplayToggle.checked;
+                
+                if (isAutoPlayOn) {
+                    goToNext(); // Otomatik oynatma açıksa bir sonraki gruba geç
+                } else {
+                    updatePlayPauseIcon(false);
+                }
+            }
+        }
+
+        // GÜVENİLİR FONKSİYON 4: Arka Planda Çalma (Media Session API)
         function setupMediaSession(voice, text) {
             if ('mediaSession' in navigator) {
                 // Medya Bilgilerini Ayarla (Kilit ekranında görünmesi için)
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: 'Shadowing Practice',
-                    artist: `Ses: ${voice.name} | Tekrar: ${currentRepeat + 1}`,
+                    artist: `Ses: ${voice.name.split(' ')[0]} | Tekrar: ${currentRepeat + 1}`,
                     album: text.substring(0, 50) + '...',
                     artwork: [
                         { src: 'https://placehold.co/96x96/2563eb/white?text=S', sizes: '96x96', type: 'image/png' },
@@ -632,7 +580,6 @@
                 
                 const isAutoPlayOn = autoplayToggle.checked;
                 if (isAutoPlayOn) {
-                    // Yeni cümleye geçerken sayaç sıfırlanmalı
                     currentRepeat = 0;
                     speak();
                 }
@@ -666,7 +613,7 @@
             if (selection && selection.length > 0 && !selection.includes(' ')) {
                 selectedWord = selection;
                 
-                let popupWidth = 150; // Ortalama bir genişlik varsay
+                let popupWidth = 150; 
                 if (selectionPopup && selectionPopup.offsetWidth > 0) {
                     popupWidth = selectionPopup.offsetWidth;
                 }
