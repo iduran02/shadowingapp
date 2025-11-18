@@ -5,18 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subtitle Shadowing Practice</title>
     
-    <!-- PWA (Progressive Web App) için etiketler -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#111827">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Shadowing App">
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/2563eb/white?text=S"> <!-- Basit bir ikon -->
-    <!-- PWA etiketleri sonu -->
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/2563eb/white?text=S"> <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -62,19 +56,14 @@
             <p class="text-lg text-gray-400" id="file-name-display">Upload a subtitle file to begin your practice.</p>
         </header>
 
-        <!-- Ayarlar Kontrol Paneli (GÖRÜNÜM DÜZELTMESİ) -->
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 
-                <!-- Sol Taraf: Dosya ve Auto-Play -->
                 <div class="flex items-center justify-between md:justify-start md:space-x-4">
-                    <!-- Dosya Yükleme Düğmesi -->
                     <label class="cursor-pointer inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         <span>Change File</span>
-                        <input type="file" id="file-input" class="hidden"> <!-- 'accept' özelliği yok (Mobil için doğru) -->
-                    </label>
+                        <input type="file" id="file-input" class="hidden"> </label>
 
-                    <!-- Auto-Play Toggle -->
                     <div class="flex items-center space-x-2">
                         <span class="text-sm font-medium text-gray-300">Auto-Play:</span>
                         <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
@@ -84,9 +73,7 @@
                     </div>
                 </div>
 
-                <!-- Sağ Taraf: Ayar Dropdown'ları -->
                 <div class="grid grid-cols-3 gap-4">
-                    <!-- Ses Seçimi -->
                     <div>
                         <label for="voice-select" class="block text-sm font-medium text-gray-300">Voice:</label>
                         <select id="voice-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
@@ -94,7 +81,6 @@
                         </select>
                     </div>
 
-                    <!-- Tekrar Sayısı -->
                     <div>
                         <label for="repeat-select" class="block text-sm font-medium text-gray-300">Repeats:</label>
                         <select id="repeat-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
@@ -105,7 +91,6 @@
                         </select>
                     </div>
 
-                    <!-- Gruplama Modu -->
                     <div>
                         <label for="group-select" class="block text-sm font-medium text-gray-300">Group:</label>
                         <select id="group-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
@@ -118,36 +103,25 @@
 
             </div>
         </div>
-        <!-- Ayar Paneli Sonu -->
-
-        <!-- Ana Cümle Görüntüleme Alanı -->
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px] flex items-center justify-center">
             <p id="sentence-display" class="text-3xl md:text-4xl font-semibold text-center text-white">Welcome! Load a file to start.</p>
         </div>
 
-        <!-- İlerleme ve Kontroller -->
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg space-y-4">
-            <!-- İlerleme Metni -->
             <div class="text-center text-gray-400">
                 <span id="progress-text">Sentence 0 / 0</span>
             </div>
             
-            <!-- Kontrol Düğmeleri -->
             <div class="flex items-center justify-center space-x-6">
-                <!-- Previous Düğmesi -->
                 <button id="prev-btn" class="text-gray-400 hover:text-white transition-colors" title="Previous">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z" clip-rule="evenodd"></path></svg>
                 </button>
                 
-                <!-- Play/Pause Düğmesi -->
                 <button id="play-pause-btn" class="p-4 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-all shadow-lg" title="Play">
-                    <!-- Play İkonu -->
                     <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                    <!-- Pause İkonu -->
                     <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm5 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd"></path></svg>
                 </button>
 
-                <!-- Next Düğmesi -->
                 <button id="next-btn" class="text-gray-400 hover:text-white transition-colors" title="Next">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z" clip-rule="evenodd" transform="rotate(180 10 10)"></path></svg>
                 </button>
@@ -156,13 +130,11 @@
 
     </div>
 
-    <!-- Kelime Seçim Pop-up Menüsü (Gizli) -->
     <div id="selection-popup" class="hidden absolute bg-gray-700 border border-gray-600 rounded-md shadow-lg p-1 z-50 flex space-x-1">
         <button id="define-btn" class="px-3 py-1 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">Define (EN)</button>
         <button id="translate-btn" class="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded">Translate (TR)</button>
     </div>
 
-    <!-- API Sonuçları için Modal (Gizli) -->
     <div id="api-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-40 p-4">
         <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-lg relative">
             <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-400 hover:text-white">
@@ -170,8 +142,7 @@
             </button>
             <h3 class="text-lg font-medium text-white mb-4" id="modal-title">Gemini API Result</h3>
             <div id="modal-content" class="text-gray-300 max-h-60 overflow-y-auto">
-                <!-- API sonucu buraya gelecek -->
-            </div>
+                </div>
         </div>
     </div>
 
@@ -193,7 +164,6 @@
 
 
         // --- DOM Elementleri ---
-        // HATA DÜZELTMESİ: 'const' yerine 'let' kullanıldı ve atamalar 'init' içine taşındı
         let fileInput, fileNameDisplay, voiceSelect, repeatSelect, groupSelect,
             autoplayToggle, sentenceDisplay, progressText, prevBtn, playPauseBtn,
             nextBtn, playIcon, pauseIcon, selectionPopup, defineBtn,
@@ -322,11 +292,11 @@
             
             let voiceToSelect = voices[0];
             if (currentSelectedName) {
-                 const previouslySelected = voices.find(v => v.name === currentSelectedName);
-                 if (previouslySelected) voiceToSelect = previouslySelected;
+                const previouslySelected = voices.find(v => v.name === currentSelectedName);
+                if (previouslySelected) voiceToSelect = previouslySelected;
             } else {
-                 const preferredVoice = voices.find(v => v.name.includes("Google") || v.name.includes("David") || v.name.includes("Zira"));
-                 if (preferredVoice) voiceToSelect = preferredVoice;
+                const preferredVoice = voices.find(v => v.name.includes("Google") || v.name.includes("David") || v.name.includes("Zira"));
+                if (preferredVoice) voiceToSelect = preferredVoice;
             }
             
             selectedVoice = voiceToSelect;
@@ -442,7 +412,7 @@
             }
         }
 
-        // 4. Konuşma Motoru ve Kontroller
+        // 4. Konuşma Motoru ve Kontroller (REVİZE EDİLDİ)
         function playPause() {
             if (isSpeaking) {
                 // Duraklat
@@ -452,25 +422,70 @@
             } else {
                 // Oynat
                 if (sentences.length > 0) {
-                    // DÜZELTME 1: Sayaç SADECE burada sıfırlanmalı
+                    // ÖNEMLİ DÜZELTME: Oynatmaya başlarken sayaç sıfırlanmalı
                     currentRepeat = 0; 
                     speak();
                 }
             }
         }
+        
+        // YENİ FONKSİYON 1: Ses ve Hız Ayarlarını Dinamik Olarak Belirleme
+        function getVoiceAndRate(repeatIndex, maxRepeats) {
+            // 1. Kullanıcının seçtiği varsayılan ses
+            const defaultVoice = selectedVoice || voices.find(v => v.default) || voices[0];
+            const defaultGender = defaultVoice ? (defaultVoice.name.toLowerCase().includes('male') || defaultVoice.name.includes('david') ? 'male' : 'female') : 'female';
 
-        // !!! MOBİL SES DEĞİŞTİRME DÜZELTMESİ BURADA !!!
+            // 2. Otomatik olarak bulduğumuz alternatif sesler
+            const maleVoice = voices.find(v => v.name.toLowerCase().includes('male') && v.name !== defaultVoice.name) || defaultVoice;
+            const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female') && v.name !== defaultVoice.name) || defaultVoice;
+            const alternateVoice = (defaultGender === 'male' ? femaleVoice : maleVoice);
+
+            // 3. Tekrar döngüsüne göre ses ve hız ayarla (0'dan başlar)
+            let voiceToUse;
+            let rateToUse; 
+
+            switch (repeatIndex % 3) { // 3 farklı senaryoyu döngüye alalım
+                case 0: // CLEAR (Anlaşılır, Yavaş)
+                    voiceToUse = maleVoice; 
+                    rateToUse = 0.8; // Yavaş hız
+                    break;
+                case 1: // NATURAL (Doğal Hız ve Ton)
+                    voiceToUse = defaultVoice; 
+                    rateToUse = 1.0; // Normal hız
+                    break;
+                case 2: // FLUENT (Akıcı, Alternatif Ses)
+                    voiceToUse = alternateVoice;
+                    rateToUse = 1.1; // Biraz daha hızlı, akıcılık odaklı
+                    break;
+                default:
+                    voiceToUse = defaultVoice;
+                    rateToUse = 1.0;
+            }
+            
+            // Eğer total tekrar sayısı 3'ten azsa, döngüyü limitli tut.
+            if (repeatIndex >= maxRepeats) {
+                voiceToUse = defaultVoice;
+                rateToUse = 1.0;
+            }
+
+            return { voice: voiceToUse, rate: rateToUse };
+        }
+
+
+        // YENİ FONKSİYON 2: Konuşma Motoru (Revize Edilmiş)
         function speak() {
-            if (isSpeaking) return; 
+            if (isSpeaking) return;
 
             isSpeaking = true;
-            // DÜZELTME 2: Bu satır SİLİNDİ (veya 'playPause'a taşındı)
-            // currentRepeat = 0; 
             updatePlayPauseIcon(true);
             
             const maxRepeats = parseInt(repeatSelect.value, 10);
             const groupSize = parseInt(groupSelect.value, 10);
             
+            // Ses ve Hız ayarlarını getVoiceAndRate'ten al
+            const { voice: voiceToUse, rate: rateToUse } = getVoiceAndRate(currentRepeat, maxRepeats);
+
+            // Konuşulacak metni oluştur
             let textToSpeak = [];
             for (let i = 0; i < groupSize; i++) {
                 if (currentIndex + i < sentences.length) {
@@ -480,19 +495,66 @@
 
             const utterance = new SpeechSynthesisUtterance(textToSpeak.join(' '));
             
-            // Sesi 'selectedVoice' global değişkeninden al
-            utterance.voice = selectedVoice; 
+            // Yeni ayarları uygula
+            utterance.voice = voiceToUse; 
+            utterance.rate = rateToUse;   
             
-            utterance.onend = handleSpeechEnd; 
+            utterance.onend = handleSpeechEnd;
             utterance.onerror = (event) => {
                 console.error('SpeechSynthesisUtterance.onerror', event);
                 isSpeaking = false;
                 updatePlayPauseIcon(false);
             };
             
-            speechSynthesis.cancel(); 
+            speechSynthesis.cancel();
             speechSynthesis.speak(utterance);
-            // --- DEĞİŞİKLİK SONU ---
+            
+            // YENİ: Tekrar bilgisini progressText'e ekle
+            const repeatInfo = ` (Tekrar ${currentRepeat + 1}/${maxRepeats} - ${rateToUse < 1.0 ? 'Clear/Yavaş' : (rateToUse > 1.0 ? 'Fluent/Hızlı' : 'Natural/Normal')})`;
+            progressText.textContent = `Sentence ${currentIndex + 1} / ${sentences.length}${repeatInfo}`;
+
+            // Arka Plan Kontrolünü kur
+            setupMediaSession(voiceToUse, textToSpeak.join(' '));
+        }
+
+        // YENİ FONKSİYON 3: Arka Planda Çalma (Media Session API)
+        function setupMediaSession(voice, text) {
+            if ('mediaSession' in navigator) {
+                // Medya Bilgilerini Ayarla (Kilit ekranında görünmesi için)
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: 'Shadowing Practice',
+                    artist: `Ses: ${voice.name} | Tekrar: ${currentRepeat + 1}`,
+                    album: text.substring(0, 50) + '...',
+                    artwork: [
+                        { src: 'https://placehold.co/96x96/2563eb/white?text=S', sizes: '96x96', type: 'image/png' },
+                        { src: 'https://placehold.co/512x512/2563eb/white?text=S', sizes: '512x512', type: 'image/png' },
+                    ]
+                });
+
+                // Kontrol Tuşlarını Tanımla (Kilit ekranında/Bildirim merkezinde görünür)
+                navigator.mediaSession.setActionHandler('play', () => { 
+                    if (!isSpeaking) playPause(); 
+                });
+                navigator.mediaSession.setActionHandler('pause', () => { 
+                    if (isSpeaking) playPause(); 
+                });
+
+                // İleri/Geri Atla (Cümle atlama)
+                navigator.mediaSession.setActionHandler('nexttrack', () => { 
+                    speechSynthesis.cancel(); 
+                    isSpeaking = false; 
+                    goToNext(); 
+                });
+                navigator.mediaSession.setActionHandler('previoustrack', () => { 
+                    speechSynthesis.cancel(); 
+                    isSpeaking = false; 
+                    goToPrev(); 
+                });
+
+                // Diğer aksiyonları kapatıyoruz, çünkü Speech Synthesis ile tam kontrol zor.
+                navigator.mediaSession.setActionHandler('seekbackward', null);
+                navigator.mediaSession.setActionHandler('seekforward', null);
+            }
         }
 
 
@@ -523,7 +585,7 @@
                 
                 const isAutoPlayOn = autoplayToggle.checked;
                 if (isAutoPlayOn) {
-                    // DÜZELTME 3: Yeni cümleye geçerken sayaç burada da sıfırlanmalı
+                    // ÖNEMLİ DÜZELTME: Yeni cümleye geçerken sayaç sıfırlanmalı
                     currentRepeat = 0;
                     speak();
                 }
@@ -556,9 +618,6 @@
             const selection = window.getSelection().toString().trim();
             if (selection && selection.length > 0 && !selection.includes(' ')) {
                 selectedWord = selection;
-                
-                // const popupWidth = selectionPopup.offsetWidth; // Bu satır 'null' hatası verebilir,
-                // çünkü popup gizliyken genişliği 0 olabilir.
                 
                 let popupWidth = 150; // Ortalama bir genişlik varsay
                 if (selectionPopup && selectionPopup.offsetWidth > 0) {
@@ -654,7 +713,6 @@
         }
 
         // --- Uygulamayı Başlat ---
-        // HATA DÜZELTMESİ: 'init' fonksiyonu artık sayfa yüklendiğinde çağrılıyor.
         window.addEventListener('DOMContentLoaded', init);
 
     </script>
