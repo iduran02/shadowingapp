@@ -50,3 +50,14 @@ self.addEventListener('activate', event => {
   );
 
 });
+// service-worker.js dosyasının en altına ekleyin
+
+self.addEventListener('notificationclick', event => {
+  console.log('Notification click received.');
+  // Bu, Service Worker'ın daha uzun süre aktif kalmasını sağlar.
+  if (event.action === 'play' || event.action === 'pause') {
+    // Media Session işlemleri tetiklenebilir, ancak sadece Service Worker'ı aktif tutmak yeterlidir.
+  }
+  // Bildirim kapatılır.
+  event.notification.close();
+});
