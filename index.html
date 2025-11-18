@@ -430,37 +430,48 @@
         }
         
         // YENİ FONKSİYON 1: Ses ve Hız Ayarlarını Dinamik Olarak Belirleme
-        function getVoiceAndRate(repeatIndex, maxRepeats) {
-            // 1. Kullanıcının seçtiği varsayılan ses
-            const defaultVoice = selectedVoice || voices.find(v => v.default) || voices[0];
-            const defaultGender = defaultVoice ? (defaultVoice.name.toLowerCase().includes('male') || defaultVoice.name.includes('david') ? 'male' : 'female') : 'female';
+       // YENİ FONKSİYON 1: Ses ve Hız Ayarlarını Dinamik Olarak Belirleme
+function getVoiceAndRate(repeatIndex, maxRepeats) {
+    // 📢 BURAYI KENDİ SES İSİMLERİNİZLE DEĞİŞTİRİN!
+    // Örnek: "Google UK English Male" veya "Microsoft David - English (United States)"
+    const MANUEL_ERKEK_SESI_ADI = "Microsoft David - English (United States)"; 
+    const MANUEL_KADIN_SESI_ADI = "Google US English"; 
+    const MANUEL_ALTERNATIF_SES_ADI = "Microsoft Zira - English (United States)"; 
+    
+    // Varsayılan sesi ve manuel sesleri bul
+    const defaultVoice = selectedVoice || voices.find(v => v.default) || voices[0];
+    const maleVoice = voices.find(v => v.name === MANUEL_ERKEK_SESI_ADI) || defaultVoice;
+    const femaleVoice = voices.find(v => v.name === MANUEL_KADIN_SESI_ADI) || defaultVoice;
+    const alternateVoice = voices.find(v => v.name === MANUEL_ALTERNATIF_SES_ADI) || defaultVoice;
 
-            // 2. Otomatik olarak bulduğumuz alternatif sesler
-            const maleVoice = voices.find(v => v.name.toLowerCase().includes('male') && v.name !== defaultVoice.name) || defaultVoice;
-            const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female') && v.name !== defaultVoice.name) || defaultVoice;
-            const alternateVoice = (defaultGender === 'male' ? femaleVoice : maleVoice);
+    let voiceToUse;
+    let rateToUse; 
 
-            // 3. Tekrar döngüsüne göre ses ve hız ayarla (0'dan başlar)
-            let voiceToUse;
-            let rateToUse; 
+    switch (repeatIndex % 3) {
+        case 0: // CLEAR (Yavaş, Erkek sesi)
+            voiceToUse = maleVoice; 
+            rateToUse = 0.8; 
+            break;
+        case 1: // NATURAL (Normal, Kadın sesi)
+            voiceToUse = femaleVoice; 
+            rateToUse = 1.0; 
+            break;
+        case 2: // FLUENT (Hızlı, Alternatif ses)
+            voiceToUse = alternateVoice;
+            rateToUse = 1.1; 
+            break;
+        default:
+            voiceToUse = defaultVoice;
+            rateToUse = 1.0;
+    }
+    
+    if (repeatIndex >= maxRepeats) {
+        voiceToUse = defaultVoice;
+        rateToUse = 1.0;
+    }
 
-            switch (repeatIndex % 3) { // 3 farklı senaryoyu döngüye alalım
-                case 0: // CLEAR (Anlaşılır, Yavaş)
-                    voiceToUse = maleVoice; 
-                    rateToUse = 0.8; // Yavaş hız
-                    break;
-                case 1: // NATURAL (Doğal Hız ve Ton)
-                    voiceToUse = defaultVoice; 
-                    rateToUse = 1.0; // Normal hız
-                    break;
-                case 2: // FLUENT (Akıcı, Alternatif Ses)
-                    voiceToUse = alternateVoice;
-                    rateToUse = 1.1; // Biraz daha hızlı, akıcılık odaklı
-                    break;
-                default:
-                    voiceToUse = defaultVoice;
-                    rateToUse = 1.0;
-            }
+    return { voice: voiceToUse, rate: rateToUse };
+}
             
             // Eğer total tekrar sayısı 3'ten azsa, döngüyü limitli tut.
             if (repeatIndex >= maxRepeats) {
@@ -718,3 +729,4 @@
     </script>
 </body>
 </html>
+
