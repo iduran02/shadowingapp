@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subtitle Shadowing Practice</title>
-    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#111827">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Shadowing App">
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/2563eb/white?text=S"> <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/2563eb/white?text=S">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* bg-gray-900 */
-            color: #f3f4f6; /* text-gray-200 */
+            background-color: #111827;
+            /* bg-gray-900 */
+            color: #f3f4f6;
+            /* text-gray-200 */
         }
         /* Oynat düğmesi devre dışı (disabled) stili */
         button:disabled {
@@ -30,13 +31,15 @@
         .toggle-checkbox:checked {
             @apply: bg-blue-600;
             right: 0;
-            border-color: #2563eb; /* bg-blue-600 */
+            border-color: #2563eb;
+            /* bg-blue-600 */
         }
-        .toggle-checkbox:checked + .toggle-label {
+        .toggle-checkbox:checked+.toggle-label {
             @apply: bg-blue-600;
         }
-        .toggle-checkbox:checked + .toggle-label:after {
-            left: calc(100% - 1.25rem); /* 1.25rem = w-5 */
+        .toggle-checkbox:checked+.toggle-label:after {
+            left: calc(100% - 1.25rem);
+            /* 1.25rem = w-5 */
             @apply: translate-x-full;
         }
         .toggle-label:after {
@@ -47,40 +50,45 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
     <div class="w-full max-w-4xl mx-auto space-y-6">
-        
         <header class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-white">Subtitle Shadowing Practice</h1>
-                <p class="text-lg text-gray-400" id="file-name-display">Upload a subtitle file to begin your practice.</p>
+                <p class="text-lg text-gray-400" id="file-name-display">Upload a subtitle file to begin your practice.
+                </p>
             </div>
             <!-- Settings button removed -->
         </header>
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                
                 <div class="flex items-center justify-between md:justify-start md:space-x-4">
-                    <label class="cursor-pointer inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <label
+                        class="cursor-pointer inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         <span>Change File</span>
-                        <input type="file" id="file-input" class="hidden"> 
+                        <input type="file" id="file-input" class="hidden">
                     </label>
                     <div class="flex items-center space-x-2">
                         <span class="text-sm font-medium text-gray-300">Auto-Play:</span>
-                        <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
-                            <input type="checkbox" id="auto-play-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                            <label for="auto-play-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
+                        <div
+                            class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" id="auto-play-toggle"
+                                class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                            <label for="auto-play-toggle"
+                                class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
                         </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-4">
                     <div>
                         <label for="voice-select" class="block text-sm font-medium text-gray-300">Voice:</label>
-                        <select id="voice-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                        <select id="voice-select"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
                             <option>Loading voices...</option>
                         </select>
                     </div>
                     <div>
                         <label for="repeat-select" class="block text-sm font-medium text-gray-300">Repeats:</label>
-                        <select id="repeat-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                        <select id="repeat-select"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
                             <option value="2">2</option>
                             <option value="3" selected>3</option>
                             <option value="4">4</option>
@@ -89,7 +97,8 @@
                     </div>
                     <div>
                         <label for="group-select" class="block text-sm font-medium text-gray-300">Group:</label>
-                        <select id="group-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
+                        <select id="group-select"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white">
                             <option value="1" selected>1 Sentence</option>
                             <option value="2">2 Sentences</option>
                             <option value="3">3 Sentences</option>
@@ -98,21 +107,35 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px] flex flex-col items-center justify-center space-y-6">
-            <p id="sentence-display" class="text-3xl md:text-4xl font-semibold text-center text-white">Welcome! Load a file to start.</p>
-            
+        <div
+            class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[200px] flex flex-col items-center justify-center space-y-6">
+            <p id="sentence-display" class="text-3xl md:text-4xl font-semibold text-center text-white">Welcome! Load a
+                file to start.</p>
             <!-- Action Buttons -->
             <div class="flex flex-wrap justify-center gap-3 w-full">
-                <button id="action-translate" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-medium transition-colors flex items-center space-x-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.204 12.596C9.032 15.635 8.183 14.084 7.5 12.5m.021-9.997l2 2m0 0l2-2m-2 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                <button id="action-translate"
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-medium transition-colors flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 5h12M9 3v2m1.204 12.596C9.032 15.635 8.183 14.084 7.5 12.5m.021-9.997l2 2m0 0l2-2m-2 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                        </path>
+                    </svg>
                     <span>Translate (TR)</span>
                 </button>
-                <button id="action-define" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full text-sm font-medium transition-colors flex items-center space-x-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <button id="action-define"
+                    class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full text-sm font-medium transition-colors flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                     <span>Define (EN)</span>
                 </button>
-                <button id="action-paraphrase" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full text-sm font-medium transition-colors flex items-center space-x-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                <button id="action-paraphrase"
+                    class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full text-sm font-medium transition-colors flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
                     <span>Alternative (EN)</span>
                 </button>
             </div>
@@ -121,31 +144,56 @@
             <div class="text-center text-gray-400">
                 <span id="progress-text">Sentence 0 / 0</span>
             </div>
-            
             <div class="flex items-center justify-center space-x-6">
                 <button id="prev-btn" class="text-gray-400 hover:text-white transition-colors" title="Previous">
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z" clip-rule="evenodd"></path></svg>
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
                 </button>
-                
-                <button id="play-pause-btn" class="p-4 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-all shadow-lg" title="Play">
-                    <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                    <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm5 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd"></path></svg>
+                <button id="play-pause-btn"
+                    class="p-4 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-all shadow-lg"
+                    title="Play">
+                    <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm5 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
                 </button>
                 <button id="next-btn" class="text-gray-400 hover:text-white transition-colors" title="Next">
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z" clip-rule="evenodd" transform="rotate(180 10 10)"></path></svg>
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 00-1.414 0L6.293 9.293a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 10l2.293-2.293a1 1 0 000-1.414z"
+                            clip-rule="evenodd" transform="rotate(180 10 10)"></path>
+                    </svg>
                 </button>
             </div>
         </div>
     </div>
-    <div id="selection-popup" class="hidden absolute bg-gray-700 border border-gray-600 rounded-md shadow-lg p-1 z-50 flex space-x-1">
-        <button id="define-btn" class="px-3 py-1 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">Define (EN)</button>
-        <button id="translate-btn" class="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded">Translate (TR)</button>
+    <div id="selection-popup"
+        class="hidden absolute bg-gray-700 border border-gray-600 rounded-md shadow-lg p-1 z-50 flex space-x-1">
+        <button id="define-btn" class="px-3 py-1 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">Define
+            (EN)</button>
+        <button id="translate-btn"
+            class="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded">Translate (TR)</button>
     </div>
     <!-- API Result Modal -->
     <div id="api-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-40 p-4">
         <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-lg relative">
             <button id="close-modal-btn" class="absolute top-2 right-2 text-gray-400 hover:text-white">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
             </button>
             <h3 class="text-lg font-medium text-white mb-4" id="modal-title">Gemini API Result</h3>
             <div id="modal-content" class="text-gray-300 max-h-60 overflow-y-auto whitespace-pre-wrap"></div>
@@ -171,7 +219,6 @@
             autoplayToggle, sentenceDisplay, progressText, prevBtn, playPauseBtn,
             nextBtn, playIcon, pauseIcon, selectionPopup, defineBtn,
             translateBtn, apiModal, modalTitle, modalContent, closeModalBtn;
-        
         let actionTranslateBtn, actionDefineBtn, actionParaphraseBtn;
         // --- Gemini API Anahtarı (HARDCODED) ---
         const apiKey = "AIzaSyAT4_HDHFFohdMRqPOjhi65qToxbLPz_EY";
@@ -222,20 +269,17 @@
             }
             // Kayıtlı veriyi yükle (localStorage)
             loadSavedData();
-            
             // Olay Dinleyicileri (Event Listeners)
             fileInput.addEventListener('change', handleFile);
             voiceSelect.addEventListener('change', handleVoiceChange);
             playPauseBtn.addEventListener('click', playPause);
             nextBtn.addEventListener('click', goToNext);
             prevBtn.addEventListener('click', goToPrev);
-            autoplayToggle.addEventListener('change', () => {});
+            autoplayToggle.addEventListener('change', () => { });
             sentenceDisplay.addEventListener('mouseup', handleTextSelection);
-            
             // Popup buttons (selected text)
             defineBtn.addEventListener('click', () => callGemini('define', selectedWord));
             translateBtn.addEventListener('click', () => callGemini('translate', selectedWord));
-            
             // Main action buttons (full sentence)
             actionTranslateBtn.addEventListener('click', () => callGemini('translate_sentence'));
             actionDefineBtn.addEventListener('click', () => callGemini('define_sentence'));
@@ -251,10 +295,8 @@
             actionTranslateBtn.disabled = !enabled;
             actionDefineBtn.disabled = !enabled;
             actionParaphraseBtn.disabled = !enabled;
-            
             const opacity = enabled ? '1' : '0.5';
             const cursor = enabled ? 'pointer' : 'not-allowed';
-            
             [actionTranslateBtn, actionDefineBtn, actionParaphraseBtn].forEach(btn => {
                 btn.style.opacity = opacity;
                 btn.style.cursor = cursor;
@@ -269,7 +311,6 @@
                     sentences = JSON.parse(savedSentences);
                     currentIndex = parseInt(savedIndex, 10) || 0;
                     fileNameDisplay.textContent = `(Loaded) ${savedFile}`;
-                    
                     if (sentences.length > 0) {
                         updateDisplay();
                         playPauseBtn.disabled = false;
@@ -288,7 +329,6 @@
             voiceSelect.innerHTML = '<option>Loading voices...</option>';
             voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('en'));
             voiceSelect.innerHTML = '';
-            
             if (voices.length === 0) {
                 voiceSelect.innerHTML = '<option>No English voices</option>';
                 if (sentences.length > 0) playPauseBtn.disabled = false;
@@ -301,7 +341,6 @@
                 option.setAttribute('data-name', voice.name);
                 voiceSelect.appendChild(option);
             });
-            
             let voiceToSelect = voices[0];
             if (currentSelectedName) {
                 const previouslySelected = voices.find(v => v.name === currentSelectedName);
@@ -310,7 +349,6 @@
                 const preferredVoice = voices.find(v => v.name.includes("Google") || v.name.includes("David") || v.name.includes("Zira"));
                 if (preferredVoice) voiceToSelect = preferredVoice;
             }
-            
             selectedVoice = voiceToSelect;
             voiceSelect.value = `${voiceToSelect.name} (${voiceToSelect.lang})`;
             if (sentences.length > 0) {
@@ -320,10 +358,9 @@
         function handleVoiceChange() {
             const selectedName = voiceSelect.options[voiceSelect.selectedIndex].getAttribute('data-name');
             selectedVoice = voices.find(voice => voice.name === selectedName);
-            
             if (isSpeaking) {
                 speechSynthesis.cancel();
-                isSpeaking = false; 
+                isSpeaking = false;
                 speak();
             }
         }
@@ -339,10 +376,8 @@
                 } else {
                     sentences = parseTxt(content);
                 }
-                
                 if (sentences.length > 0) {
                     currentIndex = 0;
-                    
                     try {
                         localStorage.setItem('shadowing_sentences', JSON.stringify(sentences));
                         localStorage.setItem('shadowing_file', file.name);
@@ -350,7 +385,6 @@
                         console.error("Failed to save to localStorage:", e);
                         sentenceDisplay.textContent = "Error: Could not save file. It might be too large.";
                     }
-                    
                     updateDisplay();
                     playPauseBtn.disabled = false;
                     nextBtn.disabled = false;
@@ -365,13 +399,12 @@
                     toggleActionButtons(false);
                 }
             };
-            
             reader.readAsText(file);
         }
         function parseSrt(data) {
             return data
                 .replace(/\r/g, '')
-                .replace(/(^\d+$|^(\d{2}:){2}\d{2},\d{3} --> (\d{2}:){2}\d{2},\d{3}$)/gm, '')
+                .replace(/(^\d+$|^(\d{2}:){2}\d{2},\d{3} -->(\d{ 2}: ){ 2}\d{ 2}, \d{ 3}$) / gm, '')
                 .replace(/<[^>]+>/g, '')
                 .split('\n\n')
                 .map(line => line.trim().replace(/\n/g, ' '))
@@ -385,7 +418,6 @@
         }
         function updateDisplay() {
             if (sentences.length === 0) return;
-            
             const groupSize = parseInt(groupSelect.value, 10);
             let textToShow = [];
             for (let i = 0; i < groupSize; i++) {
@@ -393,10 +425,8 @@
                     textToShow.push(sentences[currentIndex + i]);
                 }
             }
-            
             sentenceDisplay.textContent = textToShow.join(' ');
             progressText.textContent = `Sentence ${currentIndex + 1} / ${sentences.length}`;
-            
             if (sentences.length > 0) {
                 localStorage.setItem('shadowing_index', currentIndex.toString());
             }
@@ -422,51 +452,46 @@
                 // Oynat
                 if (sentences.length > 0) {
                     // Oynatmaya başlarken sayaç sıfırlanmalı
-                    currentRepeat = 0; 
+                    currentRepeat = 0;
                     speak();
                 }
             }
         }
-        
         function getVoiceAndRate(repeatIndex, maxRepeats) {
-            const MANUEL_ERKEK_SESI_ADI = "Microsoft David - English (United States)"; 
-            const MANUEL_KADIN_SESI_ADI = "Google US English"; 
-            const MANUEL_ALTERNATIF_SES_ADI = "Microsoft Zira - English (United States)"; 
-            
+            const MANUEL_ERKEK_SESI_ADI = "Microsoft David - English (United States)";
+            const MANUEL_KADIN_SESI_ADI = "Google US English";
+            const MANUEL_ALTERNATIF_SES_ADI = "Microsoft Zira - English (United States)";
             const defaultVoice = selectedVoice || voices.find(v => v.default) || voices[0];
             const maleVoice = voices.find(v => v.name === MANUEL_ERKEK_SESI_ADI) || defaultVoice;
             const femaleVoice = voices.find(v => v.name === MANUEL_KADIN_SESI_ADI) || defaultVoice;
             const alternateVoice = voices.find(v => v.name === MANUEL_ALTERNATIF_SES_ADI) || defaultVoice;
             let voiceToUse;
-            let rateToUse; 
+            let rateToUse;
             switch (repeatIndex % 3) {
                 case 0: // CLEAR
-                    voiceToUse = maleVoice; 
-                    rateToUse = 0.8; 
+                    voiceToUse = maleVoice;
+                    rateToUse = 0.8;
                     break;
                 case 1: // NATURAL
-                    voiceToUse = femaleVoice; 
-                    rateToUse = 1.0; 
+                    voiceToUse = femaleVoice;
+                    rateToUse = 1.0;
                     break;
                 case 2: // FLUENT
                     voiceToUse = alternateVoice;
-                    rateToUse = 1.1; 
+                    rateToUse = 1.1;
                     break;
                 default:
                     voiceToUse = defaultVoice;
                     rateToUse = 1.0;
             }
-            
             return { voice: voiceToUse, rate: rateToUse };
         }
         function speak() {
             if (isSpeaking) return;
             isSpeaking = true;
             updatePlayPauseIcon(true);
-            
             const maxRepeats = parseInt(repeatSelect.value, 10);
             const groupSize = parseInt(groupSelect.value, 10);
-            
             let textToSpeak = [];
             for (let i = 0; i < groupSize; i++) {
                 if (currentIndex + i < sentences.length) {
@@ -475,20 +500,16 @@
             }
             const { voice: voiceToUse, rate: rateToUse } = getVoiceAndRate(currentRepeat, maxRepeats);
             const utterance = new SpeechSynthesisUtterance(textToSpeak.join(' '));
-            
-            utterance.voice = voiceToUse; 
-            utterance.rate = rateToUse;   
-            
-            utterance.onend = handleSpeechEnd; 
+            utterance.voice = voiceToUse;
+            utterance.rate = rateToUse;
+            utterance.onend = handleSpeechEnd;
             utterance.onerror = (event) => {
                 console.error('SpeechSynthesisUtterance.onerror', event);
                 isSpeaking = false;
                 updatePlayPauseIcon(false);
             };
-            
             speechSynthesis.cancel();
             speechSynthesis.speak(utterance);
-            
             const repeatInfo = ` (Tekrar ${currentRepeat + 1}/${maxRepeats} - Hız: ${rateToUse.toFixed(1)})`;
             progressText.textContent = `Sentence ${currentIndex + 1} / ${sentences.length}${repeatInfo}`;
             setupMediaSession(voiceToUse, textToSpeak.join(' '));
@@ -497,14 +518,13 @@
             currentRepeat++;
             const maxRepeats = parseInt(repeatSelect.value, 10);
             if (currentRepeat < maxRepeats) {
-                isSpeaking = false; 
-                speak(); 
+                isSpeaking = false;
+                speak();
             } else {
                 isSpeaking = false;
                 const isAutoPlayOn = autoplayToggle.checked;
-                
                 if (isAutoPlayOn) {
-                    goToNext(); 
+                    goToNext();
                 } else {
                     updatePlayPauseIcon(false);
                 }
@@ -521,21 +541,21 @@
                         { src: 'https://placehold.co/512x512/2563eb/white?text=S', sizes: '512x512', type: 'image/png' },
                     ]
                 });
-                navigator.mediaSession.setActionHandler('play', () => { 
-                    if (!isSpeaking) playPause(); 
+                navigator.mediaSession.setActionHandler('play', () => {
+                    if (!isSpeaking) playPause();
                 });
-                navigator.mediaSession.setActionHandler('pause', () => { 
-                    if (isSpeaking) playPause(); 
+                navigator.mediaSession.setActionHandler('pause', () => {
+                    if (isSpeaking) playPause();
                 });
-                navigator.mediaSession.setActionHandler('nexttrack', () => { 
-                    speechSynthesis.cancel(); 
-                    isSpeaking = false; 
-                    goToNext(); 
+                navigator.mediaSession.setActionHandler('nexttrack', () => {
+                    speechSynthesis.cancel();
+                    isSpeaking = false;
+                    goToNext();
                 });
-                navigator.mediaSession.setActionHandler('previoustrack', () => { 
-                    speechSynthesis.cancel(); 
-                    isSpeaking = false; 
-                    goToPrev(); 
+                navigator.mediaSession.setActionHandler('previoustrack', () => {
+                    speechSynthesis.cancel();
+                    isSpeaking = false;
+                    goToPrev();
                 });
                 navigator.mediaSession.setActionHandler('seekbackward', null);
                 navigator.mediaSession.setActionHandler('seekforward', null);
@@ -546,7 +566,6 @@
             if (currentIndex + groupSize < sentences.length) {
                 currentIndex += groupSize;
                 updateDisplay();
-                
                 const isAutoPlayOn = autoplayToggle.checked;
                 if (isAutoPlayOn) {
                     currentRepeat = 0;
@@ -576,8 +595,7 @@
             const selection = window.getSelection().toString().trim();
             if (selection && selection.length > 0 && !selection.includes(' ')) {
                 selectedWord = selection;
-                
-                let popupWidth = 150; 
+                let popupWidth = 150;
                 if (selectionPopup && selectionPopup.offsetWidth > 0) {
                     popupWidth = selectionPopup.offsetWidth;
                 }
@@ -595,7 +613,6 @@
             showModal("Loading...", "Awaiting response from Gemini...");
             // API Key check removed (it's hardcoded)
             let textToProcess = specificText;
-            
             // If no specific text (word selection), use the current sentence(s)
             if (!textToProcess) {
                 const groupSize = parseInt(groupSelect.value, 10);
@@ -628,11 +645,10 @@
                 modalTitle.textContent = "Alternative Phrasing";
                 prompt = `Rewrite the following sentence in 3 different ways using simple, natural English: "${textToProcess}"`;
             }
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
             };
-            
             try {
                 const response = await fetchWithRetry(apiUrl, {
                     method: 'POST',
@@ -658,7 +674,7 @@
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, options);
-                    if (response.status === 429 || response.status >= 500) { 
+                    if (response.status === 429 || response.status >= 500) {
                         throw new Error(`Retryable status: ${response.status}`);
                     }
                     return response;
@@ -681,5 +697,3 @@
     </script>
 </body>
 </html>
-
-
